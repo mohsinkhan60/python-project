@@ -29,7 +29,31 @@ def create_contact():
     return jsonify({"message": "Contact created successfully"}), 201
 
 
-# @app.route("/update_contact/<int:user_id>", methods=["PUT"])
+@app.route("/update_contact/<int:user_id>", methods=["PATCH"])
+def update_contact(user_id):
+    contact = Contact.query.get(user_id)
+    if not contact:
+        return jsonify({"error": "Contact not found"}), 404
+    
+    data = request.json
+    contact.first_name = data.get("firstName", contact.first_name)
+    contact.last_name = data.get("lastName", contact.last_name)
+    contact.email = data.get("email", contact.email)
+
+    # change permeant in database
+    db.session.commit()
+    return jsonify({"message": "Contact updated successfully"}), 200
+
+@app.route("/delete_contact/<int:user_id>", methods=["DELETE"])
+def delete_contact(user_id):
+    contact = Contact.query.get(user_id)
+    if not contact:
+        return jsonify({"error": "User not found"}), 404
+
+    db.session.delete(contact)
+    db.session.commit()
+    return jsonify({"message": "Contact deleted successfully"}), 200
+
 
 if __name__ == "__main__":
     with app.app_context():
