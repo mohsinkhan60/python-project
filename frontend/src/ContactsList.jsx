@@ -1,7 +1,8 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 
 
-const ContactsList = ({contacts}) => {
+const ContactsList = ({contacts, updateContact, updateCallBack}) => {
   return (
     <div>
       <h2>Contacts</h2>
@@ -21,7 +22,7 @@ const ContactsList = ({contacts}) => {
                   <td>{contact.lastName}</td>
                   <td>{contact.email}</td>
                   <td>
-                     <button>update</button>
+                     <button onClick={() => updateContact(contact)}>update</button>
                      <button>delete</button>
                   </td>
                </tr>
